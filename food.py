@@ -117,9 +117,12 @@ with coll2:
     st.bar_chart(df.set_index('Category')['Value'], use_container_width=True, width=600, height=600, )
 
 
-hide_github_icon = """
-#GithubIcon {
-  visibility: hidden;
-}
+hide = """
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+    </style>
 """
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+st.markdown(hide, unsafe_allow_html=True)
+
+st.header("Hide the burger menu and watermark")
