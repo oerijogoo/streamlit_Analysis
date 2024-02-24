@@ -18,3 +18,7 @@ div[data-testid="stDataframe"] div[role="button"] p {
     font-size: 1.3rem;
     color: rgb(1, 84, 84);
 }
+
+.stStreamlitHeader a[href^="https://github.com/streamlit/"] {
+    display: none !important;
+}
