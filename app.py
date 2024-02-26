@@ -123,7 +123,7 @@ else:
     # Display the grouped bar chart
     st.plotly_chart(fig_bar, use_container_width=True)
 
-    # Create the grouped bar chart
+    # Create the grouped bar chart vgg
     fig_bar = go.Figure()
 
     for i, program in enumerate(unique_programs):
