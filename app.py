@@ -4,6 +4,18 @@ import plotly.graph_objects as go
 import plotly.colors as colors
 from streamlit_extras.metric_cards import style_metric_cards
 
+# Function to calculate summaries
+def calculate_summaries(column):
+    mean = column.mean()
+    mode = column.mode().values
+    max_value = column.max()
+    min_value = column.min()
+    std_dev = column.std()
+    median = column.median()
+    count = len(column)
+    range_value = max_value - min_value
+    return mean, mode, max_value, min_value, std_dev, median, count,range_value
+
 # page layout
 st.set_page_config(page_title="Colposcopy Analytics", page_icon="🌎", layout="wide")
 
@@ -22,6 +34,44 @@ with open('style.css') as f:
 
 # Read the data from Excel file
 df = pd.read_excel("colpo.xlsx")
+
+# Sidebar filters for programs and locations
+programs = df["program"].unique()
+programs = ["Select All"] + list(programs)
+selected_programs = st.sidebar.multiselect("Select Programs", programs, default="Select All", key="programs")
+
+locations = df["location"].unique()
+locations = ["Select All"] + list(locations)
+selected_locations = st.sidebar.multiselect("Select Locations", locations, default="Select All", key="locations")
+
+# Filter the data based on selected programs and locations
+if "Select All" in selected_programs and "Select All" in selected_locations:
+    filtered_df = df
+elif "Select All" in selected_programs:
+    filtered_df = df[df["location"].isin(selected_locations)]
+elif "Select All" in selected_locations:
+    filtered_df = df[df["program"].isin(selected_programs)]
+else:
+    filtered_df = df[(df["program"].isin(selected_programs)) & (df["location"].isin(selected_locations))]
+
+# Calculate summaries for age column
+age_column = filtered_df["age"]
+mean_age, mode_age, max_age, min_age, std_dev_age, median_age, count_age, range_age = calculate_summaries(age_column)
+
+# Display the summaries
+st.subheader("Summary for Age")
+st.write(f"<span style='color: blue;'>Mean:</span> {mean_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Mode:</span> {mode_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Max:</span> {max_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Min:</span> {min_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Range:</span> {range_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Standard Deviation:</span> {std_dev_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Median:</span> {median_age}", unsafe_allow_html=True)
+st.write(f"<span style='color: blue;'>Count:</span> {count_age}", unsafe_allow_html=True)
+
+# Display the filtered data
+#st.subheader("Filtered Data")
+#st.write(filtered_df)
 
 # sidebar switche
 st.sidebar.header("")
@@ -113,12 +163,15 @@ else:
 
     for i, program in enumerate(unique_programs):
         program_data = grouped_data[grouped_data["program"] == program]
-        fig_bar.add_trace(go.Bar(x=program_data["location"], y=program_data["count"], name=program, marker_color=program_colors[i]))
+        fig_bar.add_trace(
+            go.Bar(x=program_data["location"], y=program_data["count"], name=program, marker_color=program_colors[i]))
 
-    fig_bar.update_layout(title="Program Count by Location",
-                          xaxis_title="Location",
-                          yaxis_title="Count",
-                          barmode="group")
+    fig_bar.update_layout(
+        title="Program Count by Location",
+        xaxis_title="Location",
+        yaxis_title="Count",
+        barmode="group"
+    )
 
     # Display the grouped bar chart
     st.plotly_chart(fig_bar, use_container_width=True)
