@@ -16,14 +16,33 @@ st.sidebar.subheader("Select Values")
 # Get unique values for the program and location columns
 program_values = df["program"].unique()
 location_values = df["location"].unique()
+hpv16_values = df["hpv16"].unique()
+hpv18_values = df["hpv18"].unique()
+hpvdna_values = df["hpvdna"].unique()
+Via_Results_values = df["Via_Results"].unique()
+Colposcopic_impression_values = df["Colposcopic_impression"].unique()
+HIV_STATUS_values = df["HIV_STATUS"].unique()
 
 # Add "Select All" option to the program and location values
 program_values = ["Select All"] + list(program_values)
 location_values = ["Select All"] + list(location_values)
+hpv16_values = ["Select All"] + list(hpv16_values)
+hpv18_values = ["Select All"] + list(hpv18_values)
+hpvdna_values = ["Select All"] + list(hpvdna_values)
+Via_Results_values = ["Select All"] + list(Via_Results_values)
+Colposcopic_impression_values = ["Select All"] + list(Colposcopic_impression_values)
+HIV_STATUS_values = ["Select All"] + list(HIV_STATUS_values)
 
 # Multiselect to choose programs and locations
 selected_programs = st.sidebar.multiselect("Select Programs", program_values, default=["Select All"])
 selected_locations = st.sidebar.multiselect("Select Locations", location_values, default=["Select All"])
+selected_hpv16 = st.sidebar.multiselect("Select HPV16", hpv16_values, default=["Select All"])
+selected_hpv18 = st.sidebar.multiselect("Select HPV18", hpv16_values, default=["Select All"])
+selected_hpvdna = st.sidebar.multiselect("Select HPVDA", hpv16_values, default=["Select All"])
+selected_Via_Results = st.sidebar.multiselect("Select Via_Results", Via_Results_values, default=["Select All"])
+selected_Colposcopic_impression = st.sidebar.multiselect("Select Colposcopic_impression", Colposcopic_impression_values, default=["Select All"])
+selected_HIV_STATUS = st.sidebar.multiselect("Select HIV_STATUS", HIV_STATUS_values, default=["Select All"])
+
 
 # Filter the data based on selected programs and locations
 filtered_df = df.copy()
@@ -34,12 +53,30 @@ if "Select All" not in selected_programs:
 if "Select All" not in selected_locations:
     filtered_df = filtered_df[filtered_df["location"].isin(selected_locations)]
 
+if "Select All" not in selected_hpv16:
+    filtered_df = filtered_df[filtered_df["hpv16"].isin(selected_hpv16)]
+
+if "Select All" not in selected_hpv18:
+    filtered_df = filtered_df[filtered_df["hpv18"].isin(selected_hpv18)]
+
+if "Select All" not in selected_hpvdna:
+    filtered_df = filtered_df[filtered_df["hpvdna"].isin(selected_hpvdna)]
+
+if "Select All" not in selected_Via_Results:
+    filtered_df = filtered_df[filtered_df["Via_Results"].isin(selected_Via_Results)]
+
+if "Select All" not in selected_Colposcopic_impression:
+    filtered_df = filtered_df[filtered_df["Colposcopic_impression"].isin(selected_Colposcopic_impression)]
+
+if "Select All" not in selected_HIV_STATUS:
+    filtered_df = filtered_df[filtered_df["HIV_STATUS"].isin(selected_HIV_STATUS)]
+
 # Check if the filtered dataframe is empty
 if filtered_df.empty:
     st.write("No data available for the selected programs and locations.")
 else:
     # Group the data by location and program and count the occurrences
-    grouped_data = filtered_df.groupby(["location", "program"]).size().reset_index(name="count")
+    grouped_data = filtered_df.groupby(["location", "program", "hpv16", "hpv18", "hpvdna", "Via_Results", "Colposcopic_impression", "HIV_STATUS"]).size().reset_index(name="count")
 
     # Get a list of unique programs
     unique_programs = grouped_data["program"].unique()
@@ -124,3 +161,13 @@ else:
 
     # Display the program - Colposcopic_impression pie chart
     st.plotly_chart(fig_pie_program_colposcopic, use_container_width=True)
+
+    # Count the HIV_STATUS
+    HIV_STATUS_count = filtered_df["HIV_STATUS"].value_counts()
+
+    # Create the pie chart for HPV DNA
+    fig_pie_HIV_STATUS = go.Figure(data=[go.Pie(labels=HIV_STATUS_count.index, values=HIV_STATUS_count.values)])
+    fig_pie_hpvdna.update_layout(title="HPV DNA Count")
+
+    # Display the HIV_STATUS pie chart
+    st.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
