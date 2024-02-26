@@ -159,22 +159,35 @@ else:
     col1, col2 = st.columns(2)
 
     # Create the grouped bar chart
-    fig_bar = go.Figure()
+    # Group the data by program, location, and count the number of people
+    program_location_count = filtered_df.groupby(['program', 'location']).size().reset_index(name='count')
 
-    for i, program in enumerate(unique_programs):
-        program_data = grouped_data[grouped_data["program"] == program]
-        fig_bar.add_trace(
-            go.Bar(x=program_data["location"], y=program_data["count"], name=program, marker_color=program_colors[i]))
+    # Create the grouped bar chart for people count per program and location
+    fig_bar_program_location_count = go.Figure()
 
-    fig_bar.update_layout(
-        title="Program Count by Location",
+    # Iterate over each program and create a bar trace for each program
+    for program in program_location_count['program'].unique():
+        program_data = program_location_count[program_location_count['program'] == program]
+        fig_bar_program_location_count.add_trace(
+            go.Bar(
+                x=program_data['location'],
+                y=program_data['count'],
+                name=program,
+                text=program_data['count'],
+                textposition='auto'
+            )
+        )
+
+    # Update the layout of the grouped bar chart
+    fig_bar_program_location_count.update_layout(
+        title="People Count per Program and Location",
         xaxis_title="Location",
         yaxis_title="Count",
-        barmode="group"
+        barmode='group'
     )
 
-    # Display the grouped bar chart
-    st.plotly_chart(fig_bar, use_container_width=True)
+    # Display the people count per program and location grouped bar chart
+    col2.plotly_chart(fig_bar_program_location_count, use_container_width=True)
 
     # Create the grouped bar chart vgg
     fig_bar = go.Figure()
