@@ -2,15 +2,29 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.colors as colors
+from streamlit_extras.metric_cards import style_metric_cards
 
-# Set page configuration
-st.set_page_config(page_title="Biopsy  Analysis")
+# page layout
+st.set_page_config(page_title="Colposcopy Analytics", page_icon="🌎", layout="wide")
+
+# streamlit theme=none
+theme_plotly = None
+
+# sidebar logo
+st.sidebar.image("data/ici.png")
+
+# title
+st.title("iThemba_Colposcopy_Analysis")
+
+# load CSS Style
+with open('style.css') as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Read the data from Excel file
 df = pd.read_excel("colpo.xlsx")
 
-# Sidebar
-st.sidebar.title("Filters")
+# sidebar switche
+st.sidebar.header("")
 st.sidebar.subheader("Select Values")
 
 # Get unique values for the program and location columns
@@ -45,6 +59,9 @@ selected_Via_Results = st.sidebar.multiselect("Select Via_Results", Via_Results_
 selected_Colposcopic_impression = st.sidebar.multiselect("Select Colposcopic_impression", Colposcopic_impression_values, default=["Select All"])
 selected_HIV_STATUS = st.sidebar.multiselect("Select HIV_STATUS", HIV_STATUS_values, default=["Select All"])
 selected_age = st.sidebar.multiselect("Select Age", age_values, default=["Select All"])
+
+# metrics
+
 
 # Filter the data based on selected programs and locations
 filtered_df = df.copy()
@@ -173,13 +190,12 @@ else:
     col1.plotly_chart(fig_pie_via_results, use_container_width=True)
 
     # Count the occurrences of program and Colposcopic_impression combinations
-    program_colposcopic_count = filtered_df.groupby(["program", "Colposcopic_impression"]).size().reset_index(name="count")
+    program_colposcopic_count = filtered_df["Colposcopic_impression"].value_counts()
 
     # Create the pie chart for program and Colposcopic_impression
-    fig_pie_program_colposcopic = go.Figure(data=[go.Pie(labels= program_colposcopic_count["Colposcopic_impression"],
-                                                        values=program_colposcopic_count["count"])])
-
+    fig_pie_program_colposcopic = go.Figure(data=[go.Pie(labels= program_colposcopic_count.index, values=program_colposcopic_count.values)])
     fig_pie_program_colposcopic.update_layout(title="Colposcopic Impression count")
+
 
     # Display the program - Colposcopic_impression pie chart
     col2.plotly_chart(fig_pie_program_colposcopic, use_container_width=True)
@@ -193,3 +209,6 @@ else:
 
     # Display the HIV_STATUS pie chart
     col1.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
+
+
+
