@@ -131,7 +131,7 @@ else:
         fig_bar.add_trace(
             go.Bar(x=program_data["age"], y=program_data["count"], name=program, marker_color=program_colors[i]))
 
-    fig_bar.update_layout(title="Program Count by Location",
+    fig_bar.update_layout(title="Program Count by Age",
                           xaxis_title="age",
                           yaxis_title="Count",
                           barmode="group")
