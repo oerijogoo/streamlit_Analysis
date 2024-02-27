@@ -70,8 +70,8 @@ st.write(f"<span style='color: blue;'>Median:</span> {median_age}", unsafe_allow
 st.write(f"<span style='color: blue;'>Count:</span> {count_age}", unsafe_allow_html=True)
 
 # Display the filtered data
-#st.subheader("Filtered Data")
-#st.write(filtered_df)
+st.subheader("Filtered Data")
+st.write(filtered_df)
 
 # sidebar switche
 st.sidebar.header("")
@@ -189,21 +189,36 @@ else:
     # Display the people count per program and location grouped bar chart
     col2.plotly_chart(fig_bar_program_location_count, use_container_width=True)
 
-    # Create the grouped bar chart vgg
-    fig_bar = go.Figure()
+    # Create the grouped bar for age
+    program_age_count = filtered_df.groupby(['program', 'age']).size().reset_index(name='count')
 
-    for i, program in enumerate(unique_programs):
-        program_data = grouped_data[grouped_data["program"] == program]
-        fig_bar.add_trace(
-            go.Bar(x=program_data["age"], y=program_data["count"], name=program, marker_color=program_colors[i]))
+    # Create the grouped bar chart for people count per program and location
+    fig_bar_program_age_count = go.Figure()
 
-    fig_bar.update_layout(title="Program Count by Age",
-                          xaxis_title="age",
-                          yaxis_title="Count",
-                          barmode="group")
+    # Iterate over each program and create a bar trace for each program
+    for program in program_age_count['program'].unique():
+        program_data = program_age_count[program_age_count['program'] == program]
+        fig_bar_program_age_count.add_trace(
+            go.Bar(
+                x=program_data['age'],
+                y=program_data['count'],
+                name=program,
+                text=program_data['count'],
+                textposition='auto'
+            )
+        )
 
-    # Display the grouped bar chart
-    st.plotly_chart(fig_bar, use_container_width=True)
+    # Update the layout of the grouped bar chart
+    fig_bar_program_age_count.update_layout(
+        title="People Count per Program and Location",
+        xaxis_title="age",
+        yaxis_title="Count",
+        barmode='group'
+    )
+
+    # Display the people count per program and location grouped bar chart
+    col2.plotly_chart(fig_bar_program_age_count, use_container_width=True)
+
 
     # Count the programs
     program_count = filtered_df["program"].value_counts()
