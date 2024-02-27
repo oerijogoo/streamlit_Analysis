@@ -70,8 +70,8 @@ st.write(f"<span style='color: blue;'>Median:</span> {median_age}", unsafe_allow
 st.write(f"<span style='color: blue;'>Count:</span> {count_age}", unsafe_allow_html=True)
 
 # Display the filtered data
-st.subheader("Filtered Data")
-st.write(filtered_df)
+#st.subheader("Filtered Data")
+#st.write(filtered_df)
 
 # sidebar switche
 st.sidebar.header("")
