@@ -185,7 +185,7 @@ else:
 
     # Update the layout of the grouped bar chart
     fig_bar_program_location_count.update_layout(
-        title="People Count per Program and Location",
+        title="Client Count per Program per Location",
         xaxis_title="Location",
         yaxis_title="Count",
         barmode='group'
@@ -215,7 +215,7 @@ else:
 
     # Update the layout of the grouped bar chart
     fig_bar_program_age_count.update_layout(
-        title="People Count per Program and Location",
+        title="Age Frequency Count per Program",
         xaxis_title="age",
         yaxis_title="Count",
         barmode='group'
@@ -230,7 +230,7 @@ else:
 
     # Create the pie chart with the same colors as the bar chart for program count
     fig_pie_program = go.Figure(data=[go.Pie(labels=program_count.index, values=program_count.values, marker_colors=program_colors)])
-    fig_pie_program.update_layout(title="Program Count")
+    fig_pie_program.update_layout(title="Clients per Program Count")
 
     # Display the program pie chart
     col3.plotly_chart(fig_pie_program, use_container_width=True)
@@ -240,7 +240,7 @@ else:
 
     # Create the pie chart for HPV16
     fig_pie_hpv16 = go.Figure(data=[go.Pie(labels=hpv16_count.index, values=hpv16_count.values)])
-    fig_pie_hpv16.update_layout(title="HPV16 Count")
+    fig_pie_hpv16.update_layout(title="Client count in HPV16")
 
     # Display the HPV16 pie chart
     col4.plotly_chart(fig_pie_hpv16, use_container_width=True)
@@ -250,7 +250,7 @@ else:
 
     # Create the pie chart for HPV18
     fig_pie_hpv18 = go.Figure(data=[go.Pie(labels=hpv18_count.index, values=hpv18_count.values)])
-    fig_pie_hpv18.update_layout(title="HPV18 Count")
+    fig_pie_hpv18.update_layout(title="Client count in HPV18")
 
     # Display the HPV18 pie chart
     col5.plotly_chart(fig_pie_hpv18, use_container_width=True)
@@ -260,7 +260,7 @@ else:
 
     # Create the pie chart for HPV DNA
     fig_pie_hpvdna = go.Figure(data=[go.Pie(labels=hpvdna_count.index, values=hpvdna_count.values)])
-    fig_pie_hpvdna.update_layout(title="HPV DNA Count")
+    fig_pie_hpvdna.update_layout(title="Client count in HPVDNA")
 
     # Display the HPV DNA pie chart
     col6.plotly_chart(fig_pie_hpvdna, use_container_width=True)
@@ -270,7 +270,7 @@ else:
 
     # Create the pie chart for Via Results
     fig_pie_via_results = go.Figure(data=[go.Pie(labels=via_results_count.index, values=via_results_count.values)])
-    fig_pie_via_results.update_layout(title="Via Results Count")
+    fig_pie_via_results.update_layout(title=" Client count in Via_Results")
 
     # Display the Via Results pie chart
     col7.plotly_chart(fig_pie_via_results, use_container_width=True)
@@ -280,7 +280,7 @@ else:
 
     # Create the pie chart for program and Colposcopic_impression
     fig_pie_program_colposcopic = go.Figure(data=[go.Pie(labels= program_colposcopic_count.index, values=program_colposcopic_count.values)])
-    fig_pie_program_colposcopic.update_layout(title="Colposcopic Impression count")
+    fig_pie_program_colposcopic.update_layout(title="Client count in Colposcopic_Impression")
 
 
     # Display the program - Colposcopic_impression pie chart
@@ -291,7 +291,7 @@ else:
 
     # Create the pie chart for HPV DNA
     fig_pie_HIV_STATUS = go.Figure(data=[go.Pie(labels=HIV_STATUS_count.index, values=HIV_STATUS_count.values)])
-    fig_pie_HIV_STATUS.update_layout(title="HIV_STATUS Count")
+    fig_pie_HIV_STATUS.update_layout(title="Client count in HIV_STATUS")
 
     # Display the HIV_STATUS pie chart
     col9.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
