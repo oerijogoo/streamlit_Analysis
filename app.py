@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import plotly.colors as colors
 from streamlit_extras.metric_cards import style_metric_cards
 
+
 # Function to calculate summaries
 def calculate_summaries(column):
     mean = column.mean()
@@ -236,11 +237,18 @@ else:
     # Display the program pie chart
     col3.plotly_chart(fig_pie_program, use_container_width=True)
 
+    # Define a list of colors for the pie charts
+    colors_hpv16 = ['#1f77b4', '#ff7f0e', '#2ca02c']  # HPV16 colors
+    colors_hpv18 = ['#1f77b4', '#ff7f0e', '#2ca02c']  # HPV18 colors
+    colors_hpvdna = ['#2ca02c', '#ff7f0e', '#1f77b4']  # HPV DNA colors
+
     # Count the HPV16
     hpv16_count = filtered_df["hpv16"].value_counts()
 
     # Create the pie chart for HPV16
     fig_pie_hpv16 = go.Figure(data=[go.Pie(labels=hpv16_count.index, values=hpv16_count.values)])
+    fig_pie_hpv16.update_traces(marker=dict(colors=colors_hpv16))
+
     fig_pie_hpv16.update_layout(title="Client count in HPV16")
 
     # Display the HPV16 pie chart
@@ -251,6 +259,8 @@ else:
 
     # Create the pie chart for HPV18
     fig_pie_hpv18 = go.Figure(data=[go.Pie(labels=hpv18_count.index, values=hpv18_count.values)])
+    fig_pie_hpv18.update_traces(marker=dict(colors=colors_hpv18))
+
     fig_pie_hpv18.update_layout(title="Client count in HPV18")
 
     # Display the HPV18 pie chart
@@ -261,12 +271,13 @@ else:
 
     # Create the pie chart for HPV DNA
     fig_pie_hpvdna = go.Figure(data=[go.Pie(labels=hpvdna_count.index, values=hpvdna_count.values)])
+    fig_pie_hpvdna.update_traces(marker=dict(colors=colors_hpvdna))
+
     fig_pie_hpvdna.update_layout(title="Client count in HPVDNA")
 
     # Display the HPV DNA pie chart
     col6.plotly_chart(fig_pie_hpvdna, use_container_width=True)
 
-    # Count the Via Results
     via_results_count = filtered_df["Via_Results"].value_counts()
 
     # Create the pie chart for Via Results
