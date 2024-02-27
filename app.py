@@ -187,7 +187,7 @@ else:
     )
 
     # Display the people count per program and location grouped bar chart
-    col2.plotly_chart(fig_bar_program_location_count, use_container_width=True)
+    col1.plotly_chart(fig_bar_program_location_count, use_container_width=True)
 
     # Create the grouped bar for age
     program_age_count = filtered_df.groupby(['program', 'age']).size().reset_index(name='count')
