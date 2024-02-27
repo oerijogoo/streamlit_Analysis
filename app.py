@@ -34,15 +34,16 @@ with open('style.css') as f:
 
 # Read the data from Excel file
 df = pd.read_excel("colpo.xlsx")
+df.fillna("None", inplace=True)
 
 # Sidebar filters for programs and locations
 programs = df["program"].unique()
 programs = ["Select All"] + list(programs)
-selected_programs = st.sidebar.multiselect("Select Programs", programs, default="Select All", key="programs")
+selected_programs = st.sidebar.multiselect("Select Program", programs, default="Select All", key="programs")
 
 locations = df["location"].unique()
 locations = ["Select All"] + list(locations)
-selected_locations = st.sidebar.multiselect("Select Locations", locations, default="Select All", key="locations")
+selected_locations = st.sidebar.multiselect("Select Location", locations, default="Select All", key="locations")
 
 # Filter the data based on selected programs and locations
 if "Select All" in selected_programs and "Select All" in selected_locations:
