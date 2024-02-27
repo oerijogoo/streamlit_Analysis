@@ -60,7 +60,7 @@ age_column = filtered_df["age"]
 mean_age, mode_age, max_age, min_age, std_dev_age, median_age, count_age, range_age = calculate_summaries(age_column)
 
 # Display the summaries
-st.subheader("Summary for Age")
+st.subheader("Discriptive Summary for Age")
 st.write(f"<span style='color: blue;'>Mean:</span> {mean_age}", unsafe_allow_html=True)
 st.write(f"<span style='color: blue;'>Mode:</span> {mode_age}", unsafe_allow_html=True)
 st.write(f"<span style='color: blue;'>Max:</span> {max_age}", unsafe_allow_html=True)
