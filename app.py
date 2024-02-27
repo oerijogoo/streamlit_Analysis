@@ -183,7 +183,7 @@ else:
             )
         )
 
-    # Update the layout of the grouped bar chart
+    # Update the layout of the grouped bar charth
     fig_bar_program_location_count.update_layout(
         title="Client Count per Program per Location",
         xaxis_title="Location",
