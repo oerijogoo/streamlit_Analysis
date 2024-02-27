@@ -158,6 +158,10 @@ else:
 
     # Create two columns for displaying charts side by side
     col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
+    col5, col6 = st.columns(2)
+    col7, col8 = st.columns(2)
+    col9, col10 = st.columns(2)
 
     # Create the grouped bar chart
     # Group the data by program, location, and count the number of people
@@ -229,7 +233,7 @@ else:
     fig_pie_program.update_layout(title="Program Count")
 
     # Display the program pie chart
-    col1.plotly_chart(fig_pie_program, use_container_width=True)
+    col3.plotly_chart(fig_pie_program, use_container_width=True)
 
     # Count the HPV16
     hpv16_count = filtered_df["hpv16"].value_counts()
@@ -239,7 +243,7 @@ else:
     fig_pie_hpv16.update_layout(title="HPV16 Count")
 
     # Display the HPV16 pie chart
-    col2.plotly_chart(fig_pie_hpv16, use_container_width=True)
+    col4.plotly_chart(fig_pie_hpv16, use_container_width=True)
 
     # Count the HPV18
     hpv18_count = filtered_df["hpv18"].value_counts()
@@ -249,7 +253,7 @@ else:
     fig_pie_hpv18.update_layout(title="HPV18 Count")
 
     # Display the HPV18 pie chart
-    col1.plotly_chart(fig_pie_hpv18, use_container_width=True)
+    col5.plotly_chart(fig_pie_hpv18, use_container_width=True)
 
     # Count the HPV DNA
     hpvdna_count = filtered_df["hpvdna"].value_counts()
@@ -259,7 +263,7 @@ else:
     fig_pie_hpvdna.update_layout(title="HPV DNA Count")
 
     # Display the HPV DNA pie chart
-    col2.plotly_chart(fig_pie_hpvdna, use_container_width=True)
+    col6.plotly_chart(fig_pie_hpvdna, use_container_width=True)
 
     # Count the Via Results
     via_results_count = filtered_df["Via_Results"].value_counts()
@@ -269,7 +273,7 @@ else:
     fig_pie_via_results.update_layout(title="Via Results Count")
 
     # Display the Via Results pie chart
-    col1.plotly_chart(fig_pie_via_results, use_container_width=True)
+    col7.plotly_chart(fig_pie_via_results, use_container_width=True)
 
     # Count the occurrences of program and Colposcopic_impression combinations
     program_colposcopic_count = filtered_df["Colposcopic_impression"].value_counts()
@@ -280,7 +284,7 @@ else:
 
 
     # Display the program - Colposcopic_impression pie chart
-    col2.plotly_chart(fig_pie_program_colposcopic, use_container_width=True)
+    col8.plotly_chart(fig_pie_program_colposcopic, use_container_width=True)
 
     # Count the HIV_STATUS
     HIV_STATUS_count = filtered_df["HIV_STATUS"].value_counts()
@@ -290,7 +294,7 @@ else:
     fig_pie_HIV_STATUS.update_layout(title="HIV_STATUS Count")
 
     # Display the HIV_STATUS pie chart
-    col1.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
+    col9.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
 
 
 
