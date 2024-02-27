@@ -37,6 +37,7 @@ df = pd.read_excel("colpo.xlsx")
 df.fillna("None", inplace=True)
 
 # Sidebar filters for programs and locations
+st.sidebar.header("DISCRIPTIVE SUMMARY")
 programs = df["program"].unique()
 programs = ["Select All"] + list(programs)
 selected_programs = st.sidebar.multiselect("Select Program", programs, default="Select All", key="programs")
@@ -75,7 +76,7 @@ st.write(f"<span style='color: blue;'>Count:</span> {count_age}", unsafe_allow_h
 #st.write(filtered_df)
 
 # sidebar switche
-st.sidebar.header("")
+st.sidebar.header("CONTROL FOR GRAPHS")
 st.sidebar.subheader("Select Values")
 
 # Get unique values for the program and location columns
