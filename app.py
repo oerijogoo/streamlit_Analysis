@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.colors as colors
+from datetime import datetime
 from streamlit_extras.metric_cards import style_metric_cards
 
 
@@ -308,5 +309,12 @@ else:
     # Display the HIV_STATUS pie chart
     col9.plotly_chart(fig_pie_HIV_STATUS, use_container_width=True)
 
+# Get the current year
+current_year = datetime.now().year
 
+# Rest of your Streamlit app code...
+
+# Display the footer with the dynamic year
+footer_text = f"<p style='text-align: center;'>© {current_year} ICI</p>"
+st.markdown(footer_text, unsafe_allow_html=True)
 
