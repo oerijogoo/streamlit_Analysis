@@ -143,7 +143,7 @@ st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
 
 
-# Get the current yearss
+# Get the current y
 current_year = datetime.now().year
 footer_text = f"<p style='text-align: center;'>© {current_year} ICI</p>"
 st.markdown(footer_text, unsafe_allow_html=True)
