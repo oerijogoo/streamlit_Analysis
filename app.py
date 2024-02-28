@@ -30,6 +30,7 @@ st.sidebar.image("data/ici.png")
 # title
 st.title("iThemba_Colposcopy_Analysis")
 
+
 # load CSS Style
 with open('style.css') as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
