@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 import seaborn as sns
-# page layouty
+# page layouts
 st.set_page_config(page_title="Analytics", page_icon="🌎", layout="wide")
 
 # streamlit themes=nonee
