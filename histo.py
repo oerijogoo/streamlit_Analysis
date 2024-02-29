@@ -72,7 +72,7 @@ sample_type_count = filtered_data['sample_type'].value_counts()
 findings_count = filtered_data['findings'].value_counts()
 days_gap_count = filtered_data.groupby(['site', 'gender', 'days_gap']).size().unstack(fill_value=0)
 
-# Create the pie chart for site count with site colorss
+# Create the pie chart for site count with site colors
 fig_pie_site = go.Figure(data=[go.Pie(labels=site_count.index, values=site_count.values)])
 fig_pie_site.update_traces(marker=dict(colors=['rgb(255, 165, 0)', 'rgb(165, 42, 42)']))
 fig_pie_site.update_layout(
