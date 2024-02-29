@@ -75,10 +75,16 @@ days_gap_count = filtered_data.groupby(['site', 'gender', 'days_gap']).size().un
 # Create the pie chart for site count with site colors
 fig_pie_site = go.Figure(data=[go.Pie(labels=site_count.index, values=site_count.values)])
 fig_pie_site.update_traces(marker=dict(colors=['rgb(255, 165, 0)', 'rgb(165, 42, 42)']))
+fig_pie_site.update_layout(
+    title="SITES",
+)
 
 # Create the pie chart for gender count with gender colors
 fig_pie_gender = go.Figure(data=[go.Pie(labels=gender_count.index, values=gender_count.values)])
 fig_pie_gender.update_traces(marker=dict(colors=['rgb(0, 128, 0)', 'rgb(0, 0, 255)']))
+fig_pie_gender.update_layout(
+    title="Gender",
+)
 
 # Create the grouped bar chart for age frequency with different colors
 fig_bar_age = go.Figure()
@@ -103,14 +109,24 @@ for site in site_count.index:
 for i, trace in enumerate(fig_bar_age.data):
     trace.marker.color = bar_colors[i % len(bar_colors)]
 
-fig_bar_age.update_layout(title="Age Frequency by Site and Gender", barmode='group')
+fig_bar_age.update_layout(
+    title="Age Frequency by Site and Gender",
+    xaxis_title="Age",
+    yaxis_title="Frequency"
+)
 
 # Create the pie chart for sample type count with sample type colors
 fig_pie_sample_type = go.Figure(data=[go.Pie(labels=sample_type_count.index, values=sample_type_count.values)])
 fig_pie_sample_type.update_traces(marker=dict(colors=['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)']))
+fig_pie_sample_type.update_layout(
+    title="SAMPLE TYPE",
+)
 
 # Create the pie chart for findings count
 fig_pie_findings = go.Figure(data=[go.Pie(labels=findings_count.index, values=findings_count.values)])
+fig_pie_findings.update_layout(
+    title="FINDINGS",
+)
 
 # Create the grouped bar chart for days_gap frequency with different colors
 fig_bar_days_gap = go.Figure()
@@ -130,7 +146,11 @@ for i, (site, gender) in enumerate(days_gap_count.index):
         legendgroup=f"{site} - {gender}",
     ))
 
-fig_bar_days_gap.update_layout(title="Days Gap Frequency by Site and Gender", barmode='group')
+fig_bar_days_gap.update_layout(
+    title="Day_Gap Frequency by Site and Gender",
+    xaxis_title="Day_Gap",
+    yaxis_title="Frequency"
+)
 coll1, coll2 = st.columns(2)
 coll3, coll6 = st.columns(2)
 
