@@ -6,7 +6,7 @@ import seaborn as sns
 # page layout
 st.set_page_config(page_title="Analytics", page_icon="🌎", layout="wide")
 
-# streamlit theme=nonee
+# streamlit themes=nonee
 theme_plotly = None
 
 # sidebar logo
