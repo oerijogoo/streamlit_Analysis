@@ -38,7 +38,7 @@ selected_age = st.sidebar.multiselect("Select Age", age_options, default=['All']
 selected_sample_type = st.sidebar.multiselect("Select Sample Type", sample_type_options, default=['All'], key="sample_type_select")
 selected_findings = st.sidebar.multiselect("Select Findings", findings_options, default=['All'], key="findings_select")
 selected_days_gap = st.sidebar.multiselect("Select days_gap", days_gap_options, default=['All'], key="days_gap_select")
-# Filter the data based on the selected sites, gender, age, sample type, and findings days gap
+# Filter the data based on the selected sites, gender, age, sample type, and findings days gaps
 if 'All' in selected_sites:
     filtered_data = data
 else:
