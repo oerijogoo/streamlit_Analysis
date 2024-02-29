@@ -2,13 +2,25 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
+import seaborn as sns
+# page layout
+st.set_page_config(page_title="Analytics", page_icon="🌎", layout="wide")
 
+# streamlit theme=none
+theme_plotly = None
+
+# sidebar logo
+st.sidebar.image("data/ici.png")
+
+# title
+st.title("🔬 Histology Data Analysis")
+
+# load CSS Style
+with open('style.css') as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 # Load the Excel file
 data = pd.read_excel('histo.xlsx')
 
-# Set the title and top bar
-st.title("Histo Analysis")
-st.markdown("---")
 
 
 # Get unique values from the 'site', 'gender', 'age', 'sample_type', 'findings' and 'days_gap' columns
@@ -25,7 +37,7 @@ selected_gender = st.sidebar.multiselect("Select Gender", gender_options, defaul
 selected_age = st.sidebar.multiselect("Select Age", age_options, default=['All'], key="age_select")
 selected_sample_type = st.sidebar.multiselect("Select Sample Type", sample_type_options, default=['All'], key="sample_type_select")
 selected_findings = st.sidebar.multiselect("Select Findings", findings_options, default=['All'], key="findings_select")
-selected_days_gap = st.sidebar.multiselect("Select days_gap", age_options, default=['All'], key="days_gap_select")
+selected_days_gap = st.sidebar.multiselect("Select days_gap", days_gap_options, default=['All'], key="days_gap_select")
 # Filter the data based on the selected sites, gender, age, sample type, and findings days gap
 if 'All' in selected_sites:
     filtered_data = data
@@ -78,13 +90,14 @@ bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 25
 
 for site in site_count.index:
     for gender in gender_count.index:
-        fig_bar_age.add_trace(go.Bar(
-            x=age_count.columns,
-            y=age_count.loc[(site, gender)],
-            name=f"{site} - {gender}",
-            marker_color=site_colors[0] if site == 'Site 1' else site_colors[1],
-            legendgroup=f"{site} - {gender}",
-        ))
+        if (site, gender) in age_count.index:
+            fig_bar_age.add_trace(go.Bar(
+                x=age_count.columns,
+                y=age_count.loc[(site, gender)],
+                name=f"{site} - {gender}",
+                marker_color=site_colors[0] if site == 'Site 1' else site_colors[1],
+                legendgroup=f"{site} - {gender}",
+            ))
 
 # Update the marker colors for each bar in the grouped bar chart
 for i, trace in enumerate(fig_bar_age.data):
@@ -102,40 +115,41 @@ fig_pie_findings = go.Figure(data=[go.Pie(labels=findings_count.index, values=fi
 # Create the grouped bar chart for days_gap frequency with different colors
 fig_bar_days_gap = go.Figure()
 
-# Assign the colors for sites and genders
-days_gap_colors = ['rgb(0, 128, 0)', 'rgb(0, 0, 255)']
+# Get the number of unique combinations of sites and genders
+num_groups = len(days_gap_count.index)
 
-for site in site_count.index:
-    for gender in gender_count.index:
-        fig_bar_days_gap.add_trace(go.Bar(
-            x=days_gap_count.columns,
-            y=days_gap_count.loc[(site, gender)],
-            name=f"{site} - {gender}",
-            marker_color=site_colors[0] if site == 'Site 1' else site_colors[1],
-            legendgroup=f"{site} - {gender}",
-        ))
+# Generate a color palette with the desired number of colors
+days_gap_colors = sns.color_palette("husl", num_groups).as_hex()
 
-# Update the marker colors for each bar in the grouped bar chart
-for i, trace in enumerate(fig_bar_days_gap.data):
-    trace.marker.color = bar_colors[i % len(bar_colors)]
+for i, (site, gender) in enumerate(days_gap_count.index):
+    fig_bar_days_gap.add_trace(go.Bar(
+        x=days_gap_count.columns,
+        y=days_gap_count.loc[(site, gender)],
+        name=f"{site} - {gender}",
+        marker_color=days_gap_colors[i],
+        legendgroup=f"{site} - {gender}",
+    ))
 
-fig_bar_days_gap.update_layout(title="days_gap Frequency by Site and Gender", barmode='group')
+fig_bar_days_gap.update_layout(title="Days Gap Frequency by Site and Gender", barmode='group')
+coll1, coll2 = st.columns(2)
+coll3, coll6 = st.columns(2)
 
 
 # Display the pie chart for site count
-st.plotly_chart(fig_pie_site, use_container_width=True)
+coll1.plotly_chart(fig_pie_site, use_container_width=True)
 
 # Display the pie chart for gender count
-st.plotly_chart(fig_pie_gender, use_container_width=True)
+coll2.plotly_chart(fig_pie_gender, use_container_width=True)
+
+
+# Display the pie chart for sample type count
+coll3.plotly_chart(fig_pie_sample_type, use_container_width=True)
+
+# Display the pie chart for findings count
+coll6.plotly_chart(fig_pie_findings, use_container_width=True)
 
 # Display the grouped bar chart for age frequency
 st.plotly_chart(fig_bar_age, use_container_width=True)
-
-# Display the pie chart for sample type count
-st.plotly_chart(fig_pie_sample_type, use_container_width=True)
-
-# Display the pie chart for findings count
-st.plotly_chart(fig_pie_findings, use_container_width=True)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
