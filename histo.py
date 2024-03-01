@@ -173,9 +173,44 @@ st.plotly_chart(fig_bar_age, use_container_width=True)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
+# Get the columns chosen in the charts
+selected_columns = ['site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
+# Filter the data based on the selected columns
+filtered_table_data = filtered_data[selected_columns]
 
+# Create three columns for the tables
+col1, col2, col3 = st.columns([3, 1, 1])
 
+# Display the filtered_table_data DataFrame as a table
+with col1:
+    st.write("Filtered Data:")
+    st.dataframe(filtered_table_data, width=800, height=400)
+
+# Compute and display the grand total
+grand_total = filtered_table_data.shape[0]
+st.write("Grand Total:", grand_total)
+
+# Calculate statistics for the 'age' column
+age_stats = filtered_table_data['age'].describe()
+age_mode = filtered_table_data['age'].mode().values[0]
+age_stats['mode'] = age_mode
+
+# Calculate statistics for the 'days_gap' column
+days_gap_stats = filtered_table_data['days_gap'].describe()
+
+# Calculate mode for the 'days_gap' column
+days_gap_mode = filtered_table_data['days_gap'].mode().values[0]
+days_gap_stats['mode'] = days_gap_mode
+
+# Display the statistics tables
+with col2:
+    st.write("Statistics for Age:")
+    st.table(age_stats)
+
+with col3:
+    st.write("Statistics for Days Gap:")
+    st.table(days_gap_stats)
 
 # Get the curren
 hide_st_style = """"
