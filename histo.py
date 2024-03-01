@@ -212,7 +212,7 @@ with col3:
     st.write("Statistics for Days Gap:")
     st.table(days_gap_stats)
 
-# Get the curren
+# Get the current
 hide_st_style = """"
             <style>
             #MainMenu {visibility: hidden;}
