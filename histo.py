@@ -178,6 +178,13 @@ st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
 
 # Get the curren
+hide_st_style = """"
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
 current_year = datetime.now().year
 footer_text = f"<p style='text-align: center;'>© {current_year} ICI</p>"
 st.markdown(footer_text, unsafe_allow_html=True)
+st.markdown(hide_st_style, unsafe_allow_html=True)
