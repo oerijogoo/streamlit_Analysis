@@ -176,7 +176,7 @@ st.plotly_chart(fig_bar_age, use_container_width=True)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
-# Get the columns chosen in the charts
+# Get the columns chosen in the chart
 selected_columns = ['site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
 # Filter the data based on the selected columns
