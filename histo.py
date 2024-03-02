@@ -3,8 +3,11 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 import seaborn as sns
+import numpy as np
 # page layouts
-st.set_page_config(page_title="Analytics", page_icon="🌎", layout="wide")
+
+st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
+
 
 # streamlit themes=nonee
 theme_plotly = None
@@ -192,26 +195,77 @@ grand_total = filtered_table_data.shape[0]
 st.write("Grand Total:", grand_total)
 
 # Calculate statistics for the 'age' column
-age_stats = filtered_table_data['age'].describe()
-age_mode = filtered_table_data['age'].mode().values[0]
-age_stats['mode'] = age_mode
+age_data = filtered_table_data['age']
+age_count = len(age_data)
+age_mean = round(sum(age_data) / age_count, 2)
+age_std = round(np.sqrt(sum((x - age_mean) ** 2 for x in age_data) / age_count), 2)
+age_min = int(age_data.min())
+age_q1 = int(np.percentile(age_data, 25))
+age_median = int(np.percentile(age_data, 50))
+age_q3 = int(np.percentile(age_data, 75))
+age_max = int(age_data.max())
+age_range = age_max - age_min
+age_mode = int(age_data.mode().values[0])
 
 # Calculate statistics for the 'days_gap' column
-days_gap_stats = filtered_table_data['days_gap'].describe()
+days_gap_data = filtered_table_data['days_gap']
+days_gap_count = len(days_gap_data)
+days_gap_mean = round(sum(days_gap_data) / days_gap_count, 2)
+days_gap_std = round(np.sqrt(sum((x - days_gap_mean) ** 2 for x in days_gap_data) / days_gap_count), 2)
+days_gap_min = int(days_gap_data.min())
+days_gap_q1 = int(np.percentile(days_gap_data, 25))
+days_gap_median = int(np.percentile(days_gap_data, 50))
+days_gap_q3 = int(np.percentile(days_gap_data, 75))
+days_gap_max = int(days_gap_data.max())
+days_gap_range = days_gap_max - days_gap_min
+days_gap_mode = int(days_gap_data.mode().values[0])
 
-# Calculate mode for the 'days_gap' column
-days_gap_mode = filtered_table_data['days_gap'].mode().values[0]
-days_gap_stats['mode'] = days_gap_mode
+# Create a DataFrame for age statistics
+age_stats_formatted = pd.DataFrame({
+    'count': [age_count],
+    'mean': [age_mean],
+    'std': [age_std],
+    'min': [age_min],
+    '25%': [age_q1],
+    '50%': [age_median],
+    '75%': [age_q3],
+    'max': [age_max],
+    'range': [age_range],
+    'mode': [age_mode]
+})
+
+# Create a DataFrame for days_gap statistics
+days_gap_stats_formatted = pd.DataFrame({
+    'count': [days_gap_count],
+    'mean': [days_gap_mean],
+    'std': [days_gap_std],
+    'min': [days_gap_min],
+    '25%': [days_gap_q1],
+    '50%': [days_gap_median],
+    '75%': [days_gap_q3],
+    'max': [days_gap_max],
+    'range': [days_gap_range],
+    'mode': [days_gap_mode]
+})
+
+# Function to remove decimal points and trailing zeros from integers
+def remove_decimal_zeros(value):
+    if isinstance(value, int):
+        return str(value)
+    return str(value).rstrip('0').rstrip('.')
+
+# Format values in the statistics DataFrames
+age_stats_formatted = age_stats_formatted.applymap(remove_decimal_zeros)
+days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zeros)
 
 # Display the statistics tables
 with col2:
     st.write("Statistics for Age:")
-    st.table(age_stats)
+    st.table(age_stats_formatted.transpose())
 
 with col3:
     st.write("Statistics for Days Gap:")
-    st.table(days_gap_stats)
-
+    st.table(days_gap_stats_formatted.transpose())
 # Get the current
 hide_st_style = """"
             <style>
