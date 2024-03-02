@@ -18,6 +18,9 @@ st.sidebar.image("data/ici.png")
 # title
 st.title("🔬 Histology Data Analysis")
 
+# Display the green horizontal line
+st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
+
 # load CSS Style
 with open('style.css') as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -158,6 +161,9 @@ coll1, coll2 = st.columns(2)
 coll3, coll6 = st.columns(2)
 
 
+# Display the green horizontal line
+st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
+
 # Display the pie chart for site count
 coll1.plotly_chart(fig_pie_site, use_container_width=True)
 
@@ -182,6 +188,8 @@ selected_columns = ['site', 'gender', 'age', 'sample_type', 'findings', 'days_ga
 # Filter the data based on the selected columns
 filtered_table_data = filtered_data[selected_columns]
 
+# Display the green horizontal line
+st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
 # Create three columns for the tables
 col1, col2, col3 = st.columns([3, 1, 1])
 
@@ -284,6 +292,8 @@ with col3:
         days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
         st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 
+# Display the green horizontal line
+st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
 #style
 hide_st_style = """"
             <style>
