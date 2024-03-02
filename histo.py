@@ -280,7 +280,7 @@ with col3:
     # Add download feature for days_gap statistics table
     days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
     st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
-# Get the current
+# Get the current style
 hide_st_style = """"
             <style>
             #MainMenu {visibility: hidden;}
