@@ -266,8 +266,11 @@ with col2:
     age_stats_table_html = age_stats_table.to_html(index=False)  # Convert DataFrame to HTML table
     st.markdown(age_stats_table_html, unsafe_allow_html=True)  # Display HTML table
     # Add download feature for age statistics table
-    st.download_button("Download Age Stats CSV", age_stats_formatted.to_csv(index=False), file_name='age_stats.csv')
+    age_stats_csv = age_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
+    st.download_button("Download Age Stats CSV", age_stats_csv, file_name='age_stats.csv')
 
+    # Add a line separator
+    st.markdown("---")
 
 with col3:
     st.write("Statistics for Days Gap:")
@@ -275,8 +278,8 @@ with col3:
     days_gap_stats_table_html = days_gap_stats_table.to_html(index=False)  # Convert DataFrame to HTML table
     st.markdown(days_gap_stats_table_html, unsafe_allow_html=True)  # Display HTML table
     # Add download feature for days_gap statistics table
-    st.download_button("Download Days Gap Stats CSV", days_gap_stats_formatted.to_csv(index=False), file_name='days_gap_stats.csv')
-
+    days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
+    st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 # Get the current
 hide_st_style = """"
             <style>
