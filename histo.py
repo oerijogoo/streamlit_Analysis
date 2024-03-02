@@ -171,7 +171,7 @@ coll3.plotly_chart(fig_pie_sample_type, use_container_width=True)
 # Display the pie chart for findings count
 coll6.plotly_chart(fig_pie_findings, use_container_width=True)
 
-# Display the grouped bar chart for age frequenciencies
+# Display the grouped bar chart for age frequency
 st.plotly_chart(fig_bar_age, use_container_width=True)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
