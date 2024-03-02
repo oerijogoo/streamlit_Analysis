@@ -254,7 +254,7 @@ def remove_decimal_zeros(value):
         return str(value)
     return str(value).rstrip('0').rstrip('.')
 
-# Format values in the statistics DataFrames
+# Format values in the statistics DataFrame
 age_stats_formatted = age_stats_formatted.applymap(remove_decimal_zeros)
 days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zeros)
 
