@@ -261,7 +261,7 @@ days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zero
 # Display the statistics tables
 with col2:
     st.write("Statistics for Age:")
-    age_stats_table = pd.DataFrame({'Names': age_stats_formatted.columns, 'Value': age_stats_formatted.values.flatten()})
+    age_stats_table = pd.DataFrame({'STAT': age_stats_formatted.columns, 'Value': age_stats_formatted.values.flatten()})
     st.table(age_stats_table)
     # Add download feature for age statistics table
     st.download_button("Download Age Stats CSV", age_stats_formatted.to_csv(), file_name='age_stats.csv')
@@ -269,7 +269,7 @@ with col2:
 
 with col3:
     st.write("Statistics for Days Gap:")
-    days_gap_stats_table = pd.DataFrame({'Names': days_gap_stats_formatted.columns, 'Value': days_gap_stats_formatted.values.flatten()})
+    days_gap_stats_table = pd.DataFrame({'STAT': days_gap_stats_formatted.columns, 'Value': days_gap_stats_formatted.values.flatten()})
     st.table(days_gap_stats_table)
     # Add download feature for days_gap statistics table
     st.download_button("Download Days Gap Stats CSV", days_gap_stats_formatted.to_csv(), file_name='days_gap_stats.csv')
