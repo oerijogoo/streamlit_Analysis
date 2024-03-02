@@ -161,7 +161,7 @@ coll3, coll6 = st.columns(2)
 # Display the pie chart for site count
 coll1.plotly_chart(fig_pie_site, use_container_width=True)
 
-# Display the pie chart for gender count
+# Display the pie chart for gender counts
 coll2.plotly_chart(fig_pie_gender, use_container_width=True)
 
 
