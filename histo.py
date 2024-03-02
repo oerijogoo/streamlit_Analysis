@@ -176,7 +176,7 @@ st.plotly_chart(fig_bar_age, use_container_width=True)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
-# Get the columns chosen in the chart
+# Get the columns chosen in the charts
 selected_columns = ['site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
 # Filter the data based on the selected columns
@@ -261,11 +261,19 @@ days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zero
 # Display the statistics tables
 with col2:
     st.write("Statistics for Age:")
-    st.table(age_stats_formatted.transpose())
+    age_stats_table = pd.DataFrame({'Names': age_stats_formatted.columns, 'Value': age_stats_formatted.values.flatten()})
+    st.table(age_stats_table)
+    # Add download feature for age statistics table
+    st.download_button("Download Age Stats CSV", age_stats_formatted.to_csv(), file_name='age_stats.csv')
+
 
 with col3:
     st.write("Statistics for Days Gap:")
-    st.table(days_gap_stats_formatted.transpose())
+    days_gap_stats_table = pd.DataFrame({'Names': days_gap_stats_formatted.columns, 'Value': days_gap_stats_formatted.values.flatten()})
+    st.table(days_gap_stats_table)
+    # Add download feature for days_gap statistics table
+    st.download_button("Download Days Gap Stats CSV", days_gap_stats_formatted.to_csv(), file_name='days_gap_stats.csv')
+
 # Get the current
 hide_st_style = """"
             <style>
