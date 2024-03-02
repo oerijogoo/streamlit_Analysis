@@ -282,7 +282,7 @@ with col2:
     st.markdown("---")
 
 with col3:
-    show_days_gap_stats = st.checkbox("Show Days Gap Stats", value=True)
+    show_days_gap_stats = st.checkbox("Show Days Stats", value=True)
     if show_days_gap_stats:
         st.write("Statistics for Days Gap:")
         days_gap_stats_table = pd.DataFrame({'stat': days_gap_stats_formatted.columns, 'Value': days_gap_stats_formatted.values.flatten()})
