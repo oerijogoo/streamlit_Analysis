@@ -157,25 +157,26 @@ fig_bar_days_gap.update_layout(
     xaxis_title="Day_Gap",
     yaxis_title="Frequency"
 )
-coll1, coll2 = st.columns(2)
-coll3, coll6 = st.columns(2)
-
+# Define the layout for the first row
+col1, col2 = st.columns(2)
 
 # Display the green horizontal line
 st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
 
-# Display the pie chart for site count
-coll1.plotly_chart(fig_pie_site, use_container_width=True)
+# Display the pie chart for site count in the first row
+col1.plotly_chart(fig_pie_site, use_container_width=True)
 
-# Display the pie chart for gender counts
-coll2.plotly_chart(fig_pie_gender, use_container_width=True)
+# Display the pie chart for gender counts in the first row
+col2.plotly_chart(fig_pie_gender, use_container_width=True)
 
+# Define the layout for the second row
+col3, col4 = st.columns(2)
 
-# Display the pie chart for sample type count
-coll3.plotly_chart(fig_pie_sample_type, use_container_width=True)
+# Display the pie chart for sample type count in the second row
+col3.plotly_chart(fig_pie_sample_type, use_container_width=True)
 
-# Display the pie chart for findings count
-coll6.plotly_chart(fig_pie_findings, use_container_width=True)
+# Display the pie chart for findings count in the second row
+col4.plotly_chart(fig_pie_findings, use_container_width=True)
 
 # Display the grouped bar chart for ages frequency
 st.plotly_chart(fig_bar_age, use_container_width=True)
@@ -198,9 +199,9 @@ with col1:
     st.write("Filtered Data:")
     st.dataframe(filtered_table_data, width=800, height=400)
 
-# Compute and display the grand total
-grand_total = filtered_table_data.shape[0]
-st.write("Grand Total:", grand_total)
+    # Compute and display the grand total
+    grand_total = filtered_table_data.shape[0]
+    st.write("TOTAL:", grand_total)
 
 # Calculate statistics for the 'age' column
 age_data = filtered_table_data['age']
