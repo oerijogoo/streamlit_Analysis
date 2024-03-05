@@ -399,6 +399,10 @@ with col3:
         days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
         st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 
+
+
+
+
 # Display the green horizontal line
 st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
 #style
