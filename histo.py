@@ -164,8 +164,8 @@ for i, trace in enumerate(fig_bar_ages.data):
     trace.marker.color = bar_colors[i % len(bar_colors)]
 
 fig_bar_ages.update_layout(
-    title="Age Frequency by Site and Gender",
-    xaxis_title="Age Group",
+    title="Stacked Grouped Age Frequency by Site and Gender",
+    xaxis_title="Age Group interval",
     yaxis_title="Frequency",
     barmode='stack'  # Change the barmode to 'stack' for stacked bars
 )
@@ -216,8 +216,8 @@ for i, trace in enumerate(fig_bar_days.data):
     trace.marker.color = bar_colors[i % len(bar_colors)]
 
 fig_bar_days.update_layout(
-    title="Age Frequency by Site and Gender",
-    xaxis_title="Days Group",
+    title="Stacked Grouped Day_Gap Frequency by Site and Gender",
+    xaxis_title="Days Gap Interval",
     yaxis_title="Frequency",
     barmode='stack'  # Change the barmode to 'stack' for stacked bars
 )
