@@ -96,7 +96,7 @@ fig_pie_gender.update_layout(
 # Create the grouped bar chart for age frequency with different colors
 fig_bar_age = go.Figure()
 
-# Assign the colors for sites and genders
+# Assign the colors for sites and gender
 site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)']
 gender_colors = ['rgb(0, 128, 0)', 'rgb(0, 0, 255)']
 bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)']
