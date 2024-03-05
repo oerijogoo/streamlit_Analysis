@@ -185,7 +185,7 @@ days_intervals = list(range(days_min, days_max + 1, days_interval_step))
 # Calculate days count by site and gender
 days_count = filtered_data.groupby(['site', 'gender'])['days_gap'].apply(lambda x: np.histogram(x, bins=days_intervals)[0]).unstack(fill_value=0)
 
-# Create the stacked bar chart for age frequency
+# Create the stacke bar chart for age frequency
 fig_bar_days = go.Figure()
 
 # Assign the colors for sites and gender
