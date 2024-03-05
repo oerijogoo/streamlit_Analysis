@@ -188,7 +188,7 @@ days_count = filtered_data.groupby(['site', 'gender'])['days_gap'].apply(lambda 
 # Create the stacked bar chart for age frequency
 fig_bar_days = go.Figure()
 
-# Assign the colors for sites and genders
+# Assign the colors for sites and gender
 site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)']
 gender_colors = {'MALE': 'rgb(0, 128, 0)', 'FEMALE': 'rgb(0, 0, 255)'}
 bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)']
