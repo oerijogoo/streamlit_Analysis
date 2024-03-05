@@ -123,12 +123,16 @@ fig_bar_age.update_layout(
 )
 
 # Set the desired step size for the age intervals
-age_interval_step = st.sidebar.slider('Age Interval Step', min_value=0, max_value=20, value=10)
+age_interval_step = st.sidebar.slider('Age Interval Step', min_value=5, max_value=102, value=10)
 
-# Generate age intervals based on the step size, starting from zero
-age_min = 0
-age_max = data['age'].max()
+# Generate age intervals based on the step size, starting from 5
+age_min = 5  # Start from 5
+age_max = 102  # Maximum age interval
 age_intervals = list(range(age_min, age_max + 1, age_interval_step))
+
+# Adjust the last interval to include ages up to 102
+if age_intervals[-1] != age_max:
+    age_intervals.append(age_max)
 
 # Calculate age count by site and gender
 age_count = filtered_data.groupby(['site', 'gender'])['age'].apply(lambda x: np.histogram(x, bins=age_intervals)[0]).unstack(fill_value=0)
@@ -144,10 +148,11 @@ bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 25
 # Add the age values as stacked bars on the chart
 for site in age_count.index:
     site_data = age_count.loc[site]
-    x_values = [f"{interval}-{interval + age_interval_step - 1}" for interval in age_intervals]
+    x_values = [f"{interval}-{interval + age_interval_step - 1}" for interval in age_intervals[:-1]]
+    x_values.append(f"{age_intervals[-2] + 1}-{age_max}")  # Adjust the last interval to include the maximum age
     for i, gender in enumerate(site_data.index):
         if isinstance(site_data[gender], int):
-            y_values = [site_data[gender]] * len(age_intervals)
+            y_values = [site_data[gender]] * len(age_intervals[:-1])
         else:
             y_values = site_data[gender].tolist()
         fig_bar_ages.add_trace(go.Bar(
@@ -167,9 +172,13 @@ fig_bar_ages.update_layout(
     title="Stacked Grouped Age Frequency by Site and Gender",
     xaxis_title="Age Group interval",
     yaxis_title="Frequency",
-    barmode='stack'  # Change the barmode to 'stack' for stacked bars
+    barmode='stack',  # Change the barmode to 'stack' for stacked bars
+    xaxis=dict(
+        tickmode='linear',
+        tickvals=list(range(len(x_values))),
+        ticktext=x_values
+    )
 )
-
 
 
 
@@ -403,10 +412,11 @@ with col3:
 
 
 
-# Display the green horizontal line
+## Display the green horizontal line
 st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
+
 #style
-hide_st_style = """"
+hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
