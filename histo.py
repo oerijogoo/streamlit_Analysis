@@ -406,13 +406,13 @@ days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zero
 with col2:
     show_age_stats = st.checkbox("Show Age Stats", value=True)
     if show_age_stats:
-        st.write("Stats for Age (Excluding Zero Values):")
+        st.write("Excluding Zero Values:")
         age_stats_table = pd.DataFrame({'stat': age_stats_formatted.columns, 'Value': age_stats_formatted.values.flatten()})
         age_stats_table_html = age_stats_table.to_html(index=False)  # Convert DataFrame to HTML table
         st.markdown(age_stats_table_html, unsafe_allow_html=True)  # Display HTML table
         # Add download feature for age statistics table
         age_stats_csv = age_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
-        st.download_button("Download Age Stats CSV (Excluding Zero Values)", age_stats_csv, file_name='age_stats_excluding_zero.csv')
+        st.download_button("Download  CSV )", age_stats_csv, file_name='age_stats_excluding_zero.csv')
     # Add a line separator
     st.markdown("---")
 
@@ -425,7 +425,7 @@ with col3:
         st.markdown(days_gap_stats_table_html, unsafe_allow_html=True)  # Display HTML table
         # Add download feature for days_gap statistics table
         days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
-        st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
+        st.download_button("Download CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 
 #Progress Bar
 
