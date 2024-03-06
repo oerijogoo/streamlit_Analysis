@@ -130,7 +130,7 @@ age_min = 5  # Start from 5
 age_max = 102  # Maximum age interval
 age_intervals = list(range(age_min, age_max + 1, age_interval_step))
 
-# Adjust the last interval to include ages up to 102
+# Adjust the last interval to include ages up to 20
 if age_intervals[-1] != age_max:
     age_intervals.append(age_max)
 
