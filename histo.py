@@ -123,7 +123,7 @@ fig_bar_age.update_layout(
 )
 
 # Set the desired step size for the age intervals
-age_interval_step = st.sidebar.slider('Age Interval Step', min_value=5, max_value=102, value=10)
+age_interval_step = st.sidebar.slider('Age Interval Step', min_value=0, max_value=20, value=10)
 
 # Generate age intervals based on the step size, starting from 5
 age_min = 5  # Start from 5
@@ -145,9 +145,13 @@ site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)']
 gender_colors = {'MALE': 'rgb(0, 128, 0)', 'FEMALE': 'rgb(0, 0, 255)'}
 bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)']
 
+# Define x_values outside the loop
+x_values = []
+
 # Add the age values as stacked bars on the chart
 for site in age_count.index:
     site_data = age_count.loc[site]
+    # Update x_values within the loop
     x_values = [f"{interval}-{interval + age_interval_step - 1}" for interval in age_intervals[:-1]]
     x_values.append(f"{age_intervals[-2] + 1}-{age_max}")  # Adjust the last interval to include the maximum age
     for i, gender in enumerate(site_data.index):
@@ -163,6 +167,19 @@ for site in age_count.index:
             legendgroup=f"{site} - {gender}",
             offsetgroup=f"{site} - {gender}"
         ))
+
+# Update the layout with tickvals using x_values
+fig_bar_ages.update_layout(
+    title="Stacked Grouped Age Frequency by Site and Gender",
+    xaxis_title="Age Group Interval",
+    yaxis_title="Frequency",
+    barmode='stack',  # Change the barmode to 'stack' for stacked bars
+    xaxis=dict(
+        tickmode='linear',
+        tickvals=list(range(len(x_values))),
+        ticktext=x_values
+    )
+)
 
 # Update the marker colors for each bar in the stacked bar chart
 for i, trace in enumerate(fig_bar_ages.data):
@@ -299,7 +316,7 @@ st.plotly_chart(fig_bar_days)
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
 # Get the columns chosen in the charts
-selected_columns = ['site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
+selected_columns = ['ID', 'site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
 # Filter the data based on the selected columns
 filtered_table_data = filtered_data[selected_columns]
@@ -312,24 +329,27 @@ col1, col2, col3 = st.columns([3, 1, 1])
 # Display the filtered_table_data DataFrame as a table
 with col1:
     st.write("Filtered Data:")
-    st.dataframe(filtered_table_data, width=800, height=400)
+    st.dataframe(filtered_table_data, width=800, height=600)
 
     # Compute and display the grand total
     grand_total = filtered_table_data.shape[0]
     st.write("TOTAL:", grand_total)
 
-# Calculate statistics for the 'age' column
-age_data = filtered_table_data['age']
-age_count = len(age_data)
-age_mean = round(sum(age_data) / age_count, 2)
-age_std = round(np.sqrt(sum((x - age_mean) ** 2 for x in age_data) / age_count), 2)
-age_min = int(age_data.min())
-age_q1 = int(np.percentile(age_data, 25))
-age_median = int(np.percentile(age_data, 50))
-age_q3 = int(np.percentile(age_data, 75))
-age_max = int(age_data.max())
+# Filter out records with zero age for statistics calculation
+age_data_nonzero = filtered_table_data[filtered_table_data['age'] != 0]['age']
+
+# Calculate statistics for the 'age' column excluding zero values
+age_count = len(age_data_nonzero)
+age_mean = round(age_data_nonzero.mean(), 2)
+age_std = round(age_data_nonzero.std(), 2)
+age_min = int(age_data_nonzero.min())
+age_q1 = int(np.percentile(age_data_nonzero, 25))
+age_median = int(np.percentile(age_data_nonzero, 50))
+age_q3 = int(np.percentile(age_data_nonzero, 75))
+age_max = int(age_data_nonzero.max())
 age_range = age_max - age_min
-age_mode = int(age_data.mode().values[0])
+age_mode = int(age_data_nonzero.mode().values[0])
+
 
 # Calculate statistics for the 'days_gap' column
 days_gap_data = filtered_table_data['days_gap']
@@ -344,7 +364,7 @@ days_gap_max = int(days_gap_data.max())
 days_gap_range = days_gap_max - days_gap_min
 days_gap_mode = int(days_gap_data.mode().values[0])
 
-# Create a DataFrame for age statistics
+# Create a DataFrame for age statistics excluding zero values
 age_stats_formatted = pd.DataFrame({
     'count': [age_count],
     'mean': [age_mean],
@@ -386,21 +406,20 @@ days_gap_stats_formatted = days_gap_stats_formatted.applymap(remove_decimal_zero
 with col2:
     show_age_stats = st.checkbox("Show Age Stats", value=True)
     if show_age_stats:
-        st.write("Statistics for Age:")
+        st.write("Stats for Age (Excluding Zero Values):")
         age_stats_table = pd.DataFrame({'stat': age_stats_formatted.columns, 'Value': age_stats_formatted.values.flatten()})
         age_stats_table_html = age_stats_table.to_html(index=False)  # Convert DataFrame to HTML table
         st.markdown(age_stats_table_html, unsafe_allow_html=True)  # Display HTML table
         # Add download feature for age statistics table
         age_stats_csv = age_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
-        st.download_button("Download Age Stats CSV", age_stats_csv, file_name='age_stats.csv')
-
+        st.download_button("Download Age Stats CSV (Excluding Zero Values)", age_stats_csv, file_name='age_stats_excluding_zero.csv')
     # Add a line separator
     st.markdown("---")
 
 with col3:
     show_days_gap_stats = st.checkbox("Show Days Stats", value=True)
     if show_days_gap_stats:
-        st.write("Statistics for Days Gap:")
+        st.write("Stats for Days Gap:")
         days_gap_stats_table = pd.DataFrame({'stat': days_gap_stats_formatted.columns, 'Value': days_gap_stats_formatted.values.flatten()})
         days_gap_stats_table_html = days_gap_stats_table.to_html(index=False)  # Convert DataFrame to HTML table
         st.markdown(days_gap_stats_table_html, unsafe_allow_html=True)  # Display HTML table
@@ -408,7 +427,23 @@ with col3:
         days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
         st.download_button("Download Days Gap Stats CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 
+#Progress Bar
 
+coll1, coll2 = st.columns(2)
+def Progressbar():
+    st.markdown("""<style>.stProgress > div > div > div > div { background-image: linear-gradient(to right, #99ff99 , #FFFF00)}</style>""",unsafe_allow_html=True,)
+    target=4000
+    current=data["gender"].count()
+    percent=round((current/target*100))
+    mybar=st.progress(0)
+    if percent>=100:
+        st.subheader("Target  surpassed !")
+    else:
+     st.write("you have ",percent, "% " ,"of ", (format(target, 'd')), "population")
+     mybar.progress(percent,text=" Target Percentage")
+with coll1:
+ st.subheader("Target Percentage")
+ Progressbar()
 
 
 
