@@ -414,7 +414,7 @@ age_stats_formatted = pd.DataFrame({
     'mode': [age_mode]
 })
 
-# Create a DataFrame for days_gap statistics
+# Create a DataFrame for days_gaps statistics
 days_gap_stats_formatted = pd.DataFrame({
     'count': [days_gap_count],
     'mean': [days_gap_mean],
