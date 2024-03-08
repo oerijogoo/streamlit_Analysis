@@ -123,10 +123,10 @@ fig_bar_age.update_layout(
 )
 
 # Set the desired step size for the age intervals
-age_interval_step = st.sidebar.slider('Age Interval Step', min_value=0, max_value=20, value=10)
+age_interval_step = st.sidebar.slider('Age Grouping Interval Step', min_value=1, max_value=20, value=10)
 
 # Generate age intervals based on the step size, starting from 5
-age_min = 5  # Start from 5
+age_min = 0  # Start from 1
 age_max = 102  # Maximum age interval
 age_intervals = list(range(age_min, age_max + 1, age_interval_step))
 
@@ -141,12 +141,14 @@ age_count = filtered_data.groupby(['site', 'gender'])['age'].apply(lambda x: np.
 fig_bar_ages = go.Figure()
 
 # Assign the colors for sites and genders
-site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)']
-gender_colors = {'MALE': 'rgb(0, 128, 0)', 'FEMALE': 'rgb(0, 0, 255)'}
-bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)']
+site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)', 'rgb(0, 128, 128)', 'rgb(128, 128, 0)', 'rgb(128, 0, 128)']
+gender_colors = {'MALE': 'rgb(0, 128, 0)', 'FEMALE': 'rgb(0, 0, 255)', 'OTHER': 'rgb(255, 0, 255)', 'UNKNOWN': 'rgb(128, 128, 128)'}
+bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)', 'rgb(128, 0, 128)']
 
-# Define x_values outside the loop
+
+# Initialize lists to store x and y values
 x_values = []
+y_totals = []
 
 # Add the age values as stacked bars on the chart
 for site in age_count.index:
@@ -167,23 +169,27 @@ for site in age_count.index:
             legendgroup=f"{site} - {gender}",
             offsetgroup=f"{site} - {gender}"
         ))
-
-# Update the layout with tickvals using x_values
-fig_bar_ages.update_layout(
-    title="Stacked Grouped Age Frequency by Site and Gender",
-    xaxis_title="Age Group Interval",
-    yaxis_title="Frequency",
-    barmode='stack',  # Change the barmode to 'stack' for stacked bars
-    xaxis=dict(
-        tickmode='linear',
-        tickvals=list(range(len(x_values))),
-        ticktext=x_values
-    )
-)
+        # Calculate total for each group
+        if not y_totals:
+            y_totals = y_values.copy()
+        else:
+            for j, y_val in enumerate(y_values):
+                y_totals[j] += y_val
 
 # Update the marker colors for each bar in the stacked bar chart
 for i, trace in enumerate(fig_bar_ages.data):
     trace.marker.color = bar_colors[i % len(bar_colors)]
+
+# Add total annotations to the chart
+for i, total in enumerate(y_totals):
+    fig_bar_ages.add_annotation(
+        x=i,
+        y=total,
+        text=str(total),
+        showarrow=False,
+        yshift=10,  # Adjust vertical position
+        font=dict(size=10)  # Adjust font size
+    )
 
 fig_bar_ages.update_layout(
     title="Stacked Grouped Age Frequency by Site and Gender",
@@ -197,38 +203,46 @@ fig_bar_ages.update_layout(
     )
 )
 
+# Set the desired step size for the day intervals
+day_interval_step = st.sidebar.slider('Day Interval Step', min_value=0, max_value=20, value=10)
+
+# Generate day intervals based on the step size, starting from 5
+day_min = 0  # Start from 0
+day_max = 280  # Maximum day interval
+day_intervals = list(range(day_min, day_max + 1, day_interval_step))
+
+# Adjust the last interval to include day up to 20
+if day_intervals[-1] != day_max:
+    day_intervals.append(day_max)
+
+# Calculate day count by site and gender
+day_count = filtered_data.groupby(['site', 'gender'])['days_gap'].apply(lambda x: np.histogram(x, bins=day_intervals)[0]).unstack(fill_value=0)
+
+# Create the stacked bar chart for day frequency
+fig_bar_day = go.Figure()
+
+# Assign the colors for sites and genders
+site_colors = ['rgb(255, 0, 0)', 'rgb(0, 128, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)', 'rgb(128, 0, 128)']  # Update site colors
+gender_colors = {'MALE': 'rgb(0, 0, 255)', 'FEMALE': 'rgb(255, 165, 0)', 'OTHER': 'rgb(255, 0, 255)'}  # Update gender colors
+bar_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)', 'rgb(0, 128, 128)', 'rgb(128, 0, 128)', 'rgb(0, 255, 255)', 'rgb(255, 0, 255)']  # Update bar colors
 
 
-# Set the desired step size for the age intervals
-# Set the desired step size for the age intervals
-days_interval_step = st.sidebar.slider('Days Interval Step', min_value=0, max_value=50, value=5)
+# Initialize lists to store x and y values
+x_values = []
+y_totals = []
 
-# Generate age intervals based on the step size, starting from zero
-days_min = 0
-days_max = data['days_gap'].max()
-days_intervals = list(range(days_min, days_max + 1, days_interval_step))
-
-# Calculate days count by site and gender
-days_count = filtered_data.groupby(['site', 'gender'])['days_gap'].apply(lambda x: np.histogram(x, bins=days_intervals)[0]).unstack(fill_value=0)
-
-# Create the stacke bar chart for age frequency
-fig_bar_days = go.Figure()
-
-# Assign the colors for sites and gender
-site_colors = ['rgb(255, 165, 0)', 'rgb(165, 42, 42)']
-gender_colors = {'MALE': 'rgb(0, 128, 0)', 'FEMALE': 'rgb(0, 0, 255)'}
-bar_colors = ['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 255, 0)']
-
-# Add the age values as stacked bars on the chart
-for site in days_count.index:
-    site_data = days_count.loc[site]
-    x_values = [f"{interval}-{interval + days_interval_step - 1}" for interval in days_intervals]
+# Add the day values as stacked bars on the chart
+for site in day_count.index:
+    site_data = day_count.loc[site]
+    # Update x_values within the loop
+    x_values = [f"{interval}-{interval + day_interval_step - 1}" for interval in day_intervals[:-1]]
+    x_values.append(f"{day_intervals[-2] + 1}-{day_max}")  # Adjust the last interval to include the maximum day
     for i, gender in enumerate(site_data.index):
         if isinstance(site_data[gender], int):
-            y_values = [site_data[gender]] * len(days_intervals)
+            y_values = [site_data[gender]] * len(day_intervals[:-1])
         else:
             y_values = site_data[gender].tolist()
-        fig_bar_days.add_trace(go.Bar(
+        fig_bar_day.add_trace(go.Bar(
             x=x_values,
             y=y_values,
             name=f"{site} - {gender}",
@@ -236,16 +250,38 @@ for site in days_count.index:
             legendgroup=f"{site} - {gender}",
             offsetgroup=f"{site} - {gender}"
         ))
+        # Calculate total for each group
+        if not y_totals:
+            y_totals = y_values.copy()
+        else:
+            for j, y_val in enumerate(y_values):
+                y_totals[j] += y_val
 
 # Update the marker colors for each bar in the stacked bar chart
-for i, trace in enumerate(fig_bar_days.data):
+for i, trace in enumerate(fig_bar_day.data):
     trace.marker.color = bar_colors[i % len(bar_colors)]
 
-fig_bar_days.update_layout(
-    title="Stacked Grouped Day_Gap Frequency by Site and Gender",
-    xaxis_title="Days Gap Interval",
+# Add total annotations to the chart
+for i, total in enumerate(y_totals):
+    fig_bar_day.add_annotation(
+        x=i,
+        y=total,
+        text=str(total),
+        showarrow=False,
+        yshift=10,  # Adjust vertical position
+        font=dict(size=10)  # Adjust font size
+    )
+
+fig_bar_day.update_layout(
+    title="Stacked Grouped Day Frequency by Site and Gender",
+    xaxis_title="Day Group interval",
     yaxis_title="Frequency",
-    barmode='stack'  # Change the barmode to 'stack' for stacked bars
+    barmode='stack',  # Change the barmode to 'stack' for stacked bars
+    xaxis=dict(
+        tickmode='linear',
+        tickvals=list(range(len(x_values))),
+        ticktext=x_values
+    )
 )
 
 
@@ -311,7 +347,7 @@ st.plotly_chart(fig_bar_age, use_container_width=True)
 
 # Display the grouped bar chart
 st.plotly_chart(fig_bar_ages)
-st.plotly_chart(fig_bar_days)
+st.plotly_chart(fig_bar_day)
 # Display the pie chart for findings counts
 st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
@@ -425,7 +461,7 @@ with col3:
         st.markdown(days_gap_stats_table_html, unsafe_allow_html=True)  # Display HTML table
         # Add download feature for days_gap statistics table
         days_gap_stats_csv = days_gap_stats_table.to_csv(index=False, header=True)  # Convert DataFrame to CSV with headers
-        st.download_button("Download CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
+        st.download_button("Download  CSV", days_gap_stats_csv, file_name='days_gap_stats.csv')
 
 #Progress Bar
 
@@ -461,3 +497,8 @@ current_year = datetime.now().year
 footer_text = f"<p style='text-align: center;'>© {current_year} ICI</p>"
 st.markdown(footer_text, unsafe_allow_html=True)
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
+
+
+
+
