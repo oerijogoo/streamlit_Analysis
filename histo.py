@@ -328,28 +328,50 @@ col1, col2 = st.columns(2)
 st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
 
 # Display the pie chart for site count in the first row
-col1.plotly_chart(fig_pie_site, use_container_width=True)
+show_pie_site = st.sidebar.checkbox("Show Pie Chart for Site Count", value=True)
+if show_pie_site:
+    col1.plotly_chart(fig_pie_site, use_container_width=True)
 
 # Display the pie chart for gender counts in the first row
-col2.plotly_chart(fig_pie_gender, use_container_width=True)
+show_pie_gender = st.sidebar.checkbox("Show Pie Chart for Gender Counts", value=True)
+if show_pie_gender:
+    col2.plotly_chart(fig_pie_gender, use_container_width=True)
 
 # Define the layout for the second row
 col3, col4 = st.columns(2)
 
 # Display the pie chart for sample type count in the second row
-col3.plotly_chart(fig_pie_sample_type, use_container_width=True)
+show_pie_sample_type = st.sidebar.checkbox("Show Pie Chart for Sample Type Count", value=True)
+if show_pie_sample_type:
+    col3.plotly_chart(fig_pie_sample_type, use_container_width=True)
 
 # Display the pie chart for findings count in the second row
-col4.plotly_chart(fig_pie_findings, use_container_width=True)
+show_pie_findings = st.sidebar.checkbox("Show Pie Chart for Findings Count", value=True)
+if show_pie_findings:
+    col4.plotly_chart(fig_pie_findings, use_container_width=True)
 
 # Display the grouped bar chart for ages frequency
-st.plotly_chart(fig_bar_age, use_container_width=True)
+show_bar_age = st.sidebar.checkbox("Show Bar Chart for Ages Frequency", value=True)
+if show_bar_age:
+    st.plotly_chart(fig_bar_age, use_container_width=True)
+
+
+# Display the pie chart for findings counts
+show_bar_days_gap = st.sidebar.checkbox("Show Bar Chart for Findings Counts", value=True)
+if show_bar_days_gap:
+    st.plotly_chart(fig_bar_days_gap, use_container_width=True)
 
 # Display the grouped bar chart
-st.plotly_chart(fig_bar_ages)
-st.plotly_chart(fig_bar_day)
-# Display the pie chart for findings counts
-st.plotly_chart(fig_bar_days_gap, use_container_width=True)
+show_bar_ages = st.sidebar.checkbox("Show Grouped Bar Chart for Age intervals", value=True)
+if show_bar_ages:
+    st.plotly_chart(fig_bar_ages)
+
+# Display the grouped bar chart for day frequency
+show_bar_day = st.sidebar.checkbox("Show Grouped Bar Chart for Day Intervals", value=True)
+if show_bar_day:
+    st.plotly_chart(fig_bar_day)
+
+
 
 # Get the columns chosen in the charts
 selected_columns = ['ID', 'site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
