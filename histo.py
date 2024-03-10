@@ -18,8 +18,6 @@ st.sidebar.image("data/ici.png")
 # title
 st.title("🔬 Histology Data Analysis")
 
-# Display the green horizontal line
-st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
 
 # load CSS Style
 with open('style.css') as f:
@@ -324,8 +322,6 @@ fig_bar_days_gap.update_layout(
 # Define the layout for the first row
 col1, col2 = st.columns(2)
 
-# Display the green horizontal line
-st.markdown('<hr style="border: 2px solid blue;">', unsafe_allow_html=True)
 
 # Display the pie chart for site count in the first row
 show_pie_site = st.sidebar.checkbox("Show Pie Chart for Site Count", value=True)
@@ -379,9 +375,7 @@ selected_columns = ['ID', 'site', 'gender', 'age', 'sample_type', 'findings', 'd
 # Filter the data based on the selected columns
 filtered_table_data = filtered_data[selected_columns]
 
-# Display the green horizontal line
-st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
-# Create three columns for the tables
+
 col1, col2, col3 = st.columns([3, 1, 1])
 
 # Display the filtered_table_data DataFrame as a table
@@ -504,9 +498,6 @@ with coll1:
  Progressbar()
 
 
-
-## Display the green horizontal line
-st.markdown('<hr style="border: 2px solid green;">', unsafe_allow_html=True)
 
 #style
 hide_st_style = """
