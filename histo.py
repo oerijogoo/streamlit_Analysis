@@ -6,7 +6,7 @@ import seaborn as sns
 import numpy as np
 import io
 
-# page layouts
+# page layout
 
 st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
 
