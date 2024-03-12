@@ -406,7 +406,7 @@ export_df = filtered_data[selected_columns]
 
 # Prepare the Excel content
 excel_content = io.BytesIO()
-with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
+with pd.ExcelWriter(excel_content, engine='openpyxl') as writer:
     workbook = writer.book
     worksheet = workbook.add_worksheet('Sheet1')
 
