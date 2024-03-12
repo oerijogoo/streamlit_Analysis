@@ -1,11 +1,12 @@
-import streamlit as st
+import io
+from datetime import datetime
+
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from datetime import datetime
 import seaborn as sns
-import numpy as np
-import io
-import openpyxl
+import streamlit as st
+
 # page layout
 
 st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
@@ -406,7 +407,7 @@ export_df = filtered_data[selected_columns]
 
 # Prepare the Excel content
 excel_content = io.BytesIO()
-with pd.ExcelWriter(excel_content, engine='openpyxl') as writer:
+with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
     workbook = writer.book
     worksheet = workbook.add_worksheet('Sheet1')
 
