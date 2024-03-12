@@ -5,7 +5,7 @@ from datetime import datetime
 import seaborn as sns
 import numpy as np
 import io
-
+import xlsxwriter
 # page layout
 
 st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
