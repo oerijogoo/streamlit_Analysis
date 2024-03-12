@@ -4,6 +4,8 @@ import plotly.graph_objects as go
 from datetime import datetime
 import seaborn as sns
 import numpy as np
+import io
+import xlsxwriter
 # page layouts
 
 st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
@@ -378,14 +380,74 @@ filtered_table_data = filtered_data[selected_columns]
 
 col1, col2, col3 = st.columns([3, 1, 1])
 
-# Display the filtered_table_data DataFrame as a table
-with col1:
-    st.write("Filtered Data:")
-    st.dataframe(filtered_table_data, width=800, height=600)
 
-    # Compute and display the grand total
-    grand_total = filtered_table_data.shape[0]
-    st.write("TOTAL:", grand_total)
+
+# ... Your existing code ...
+
+# Construct the table title based on selected values
+table_title_parts = []
+
+if selected_sites:
+    table_title_parts.append(f"{', '.join(selected_sites)} SITES ")
+if selected_gender:
+    table_title_parts.append(f"_ {', '.join(selected_gender)} GENDER")
+if selected_sample_type:
+    table_title_parts.append(f"_ {', '.join(selected_sample_type)} SAMPLE TYPE TAKEN")
+
+# Filter out 'nan' from selected findings
+selected_findings_filtered = [finding for finding in selected_findings if str(finding) != 'nan']
+
+# Append findings to table title parts
+table_title_parts.append(f"with_ {', '.join(selected_findings_filtered)} FINDINGS")
+table_title = "Filtered Data for\n" + "\n".join(table_title_parts)
+
+# Prepare data for download
+export_df = filtered_data[selected_columns]
+
+# Prepare the Excel content
+excel_content = io.BytesIO()
+with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
+    workbook = writer.book
+    worksheet = workbook.add_worksheet('Sheet1')
+
+    # Merge cells for the title
+    title_format = workbook.add_format({
+        'bold': True,
+        'align': 'center',
+        'valign': 'vcenter',
+        'font_size': 6,
+        'text_wrap': True
+    })
+    worksheet.merge_range('A1:F2', table_title, title_format)
+
+    # Write the column headers
+    for col_idx, header in enumerate(export_df.columns):
+        worksheet.write(2, col_idx, header)
+
+    # Write the data
+    for row_idx, row in enumerate(export_df.itertuples(), start=3):
+        for col_idx, value in enumerate(row[1:], start=0):
+            worksheet.write(row_idx, col_idx, str(value))  # Convert value to string
+
+# Display the table title
+st.write(table_title)
+
+# Display the table
+st.dataframe(export_df, width=800, height=600)
+
+# Compute and display the grand total
+grand_total = filtered_data.shape[0]
+st.write("TOTAL:", grand_total)
+
+# Download the data with title included
+if st.button("Download Data"):
+    # Download data as Excel
+    st.download_button(
+        label="Download Excel",
+        data=excel_content.getvalue(),
+        file_name='filtered_data.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
 # Filter out records with zero age for statistics calculation
 age_data_nonzero = filtered_table_data[filtered_table_data['age'] != 0]['age']
