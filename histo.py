@@ -391,17 +391,17 @@ col1, col2, col3 = st.columns([3, 1, 1])
 table_title_parts = []
 
 if selected_sites:
-    table_title_parts.append(f"{', '.join(selected_sites)} SITES ")
+    table_title_parts.append(f"SITES[{', '.join(selected_sites)}]_")
 if selected_gender:
-    table_title_parts.append(f"_ {', '.join(selected_gender)} GENDER")
+    table_title_parts.append(f"GENDER[{', '.join(selected_gender)}]_")
 if selected_sample_type:
-    table_title_parts.append(f"_ {', '.join(selected_sample_type)} SAMPLE TYPE TAKEN")
+    table_title_parts.append(f"SAMPLE TYPE[{', '.join(selected_sample_type)}]_")
 
 # Filter out 'nan' from selected findings
 selected_findings_filtered = [finding for finding in selected_findings if str(finding) != 'nan']
 
 # Append findings to table title parts
-table_title_parts.append(f"with_ {', '.join(selected_findings_filtered)} FINDINGS")
+table_title_parts.append(f"FINDINGS[{', '.join(selected_findings_filtered)}]")
 table_title = "Filtered Data for\n" + "\n".join(table_title_parts)
 
 # Prepare data for download
