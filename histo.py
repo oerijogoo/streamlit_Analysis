@@ -11,7 +11,7 @@ import xlsxwriter
 st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
 
 
-# streamlit themes=nonee
+# streamlit themes=none
 theme_plotly = None
 
 # sidebar logo
