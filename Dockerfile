@@ -4,7 +4,7 @@ FROM python:3.10
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the requirements.txt file to the container
+# Copy the requirements.txt file to the container-
 COPY requirements.txt .
 
 # Install the required packages
