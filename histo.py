@@ -418,17 +418,20 @@ with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
         'bold': True,
         'align': 'center',
         'valign': 'vcenter',
-        'font_size': 6,
+        'font_size': 10,
         'text_wrap': True
     })
-    worksheet.merge_range('A1:F2', table_title, title_format)
+    worksheet.merge_range('A1:G5', table_title, title_format)
 
     # Write the column headers
+    header_format = workbook.add_format({
+        'bold': True
+    })
     for col_idx, header in enumerate(export_df.columns):
-        worksheet.write(2, col_idx, header)
+        worksheet.write(5, col_idx, header, header_format)
 
     # Write the data
-    for row_idx, row in enumerate(export_df.itertuples(), start=3):
+    for row_idx, row in enumerate(export_df.itertuples(), start=6):
         for col_idx, value in enumerate(row[1:], start=0):
             worksheet.write(row_idx, col_idx, str(value))  # Convert value to string
 
