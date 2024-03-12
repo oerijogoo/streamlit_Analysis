@@ -402,7 +402,7 @@ selected_findings_filtered = [finding for finding in selected_findings if str(fi
 
 # Append findings to table title parts
 table_title_parts.append(f"FINDINGS[{', '.join(selected_findings_filtered)}]")
-table_title = "Filtered Data for\n" + "\n".join(table_title_parts)
+table_title = "Data for\n" + "\n".join(table_title_parts)
 
 # Prepare data for download
 export_df = filtered_data[selected_columns]
