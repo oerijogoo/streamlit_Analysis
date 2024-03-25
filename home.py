@@ -1,3 +1,13 @@
+import streamlit as st
+
+st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
+
+
+# streamlit themes=none
+theme_plotly = None
+
+# sidebar logo
+st.sidebar.image("data/ici.png")
 import io
 from datetime import datetime
 
@@ -11,14 +21,10 @@ import openpyxl
 from openpyxl import Workbook
 # page layout
 
-st.set_page_config(page_title="ICI", page_icon="data/ici.png", layout="wide")
 
 
 # streamlit themes=none
 theme_plotly = None
-
-# sidebar logo
-st.sidebar.image("data/ici.png")
 
 # title
 st.title("🔬 Histology Data Analysis")
@@ -580,6 +586,7 @@ current_year = datetime.now().year
 footer_text = f"<p style='text-align: center;'>© {current_year} ICI</p>"
 st.markdown(footer_text, unsafe_allow_html=True)
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
 
 
 
