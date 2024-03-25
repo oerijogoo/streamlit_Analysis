@@ -28,7 +28,7 @@ st.title("🔬 Histology Data Analysis")
 with open('style.css') as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 # Load the Excel file
-data = pd.read_excel('histology.xlsx')
+data = pd.read_excel('histof.xlsx')
 
 
 
@@ -375,7 +375,7 @@ if show_bar_day:
 
 
 # Get the columns chosen in the charts
-selected_columns = ['ID', 'site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
+selected_columns = ['id', 'site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
 # Filter the data based on the selected columns
 filtered_table_data = filtered_data[selected_columns]
