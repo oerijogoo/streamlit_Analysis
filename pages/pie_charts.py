@@ -315,7 +315,7 @@ with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
     workbook = writer.book
     worksheet = workbook.add_worksheet('Sheet1')
 
-    # Merge cells for the title
+    # Merge cells for the titles
     title_format = workbook.add_format({
         'bold': True,
         'align': 'center',
