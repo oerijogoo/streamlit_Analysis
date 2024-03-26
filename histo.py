@@ -374,7 +374,7 @@ if show_bar_day:
 
 
 
-# Get the columns chosen in the charts
+# Get the columns chosen in the chart
 selected_columns = ['id', 'site', 'gender', 'age', 'sample_type', 'findings', 'days_gap']
 
 # Filter the data based on the selected columns
