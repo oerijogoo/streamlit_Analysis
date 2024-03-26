@@ -309,7 +309,7 @@ table_title = "Data for\n" + "\n".join(table_title_parts)
 # Prepare data for download
 export_df = filtered_data[selected_columns]
 
-# Prepare the Excel content
+# Prepare the Excel contents
 excel_content = io.BytesIO()
 with pd.ExcelWriter(excel_content, engine='xlsxwriter') as writer:
     workbook = writer.book
